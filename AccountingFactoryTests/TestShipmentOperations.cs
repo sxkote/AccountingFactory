@@ -260,6 +260,7 @@ namespace AccountingFactoryTests
             Assert.AreEqual(19342.47, operation.ToCustomer.Send.Value);
         }
 
+
         public ShipmentOperation AssertPayment(ExampleShipment shipment, DateTime date)
         {
             var builder = this.GenerateBuilder(shipment, date, shipment.Summ, "PaymentDebtor");
