@@ -294,6 +294,7 @@ namespace AccountingFactoryTests
                 Assert.IsTrue(operation.Postings.Any(p => p.Debt.Number.StartsWith("999 99") && p.Cred.Number.StartsWith("914 14") && p.Summ == shipment.Summ));
 
             return operation;
+            //test change
         }
     }
 }
