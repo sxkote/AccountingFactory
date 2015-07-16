@@ -129,9 +129,17 @@ namespace AccountingFactoryTests
                     return _shipment.IsAccountCommission407;
 
                 case "IncreasedCommission":
-                    return 0;
+                    {
+                        if (_shipment.Operations.Any(o => o.Type == "IncreasedCommission"))
+                            return _shipment.Operations.Where(o => o.Type == "IncreasedCommission").Sum(o => o.Summ);
+                        return 0;
+                    };
                 case "IncreasedUsed":
-                    return 0;
+                    {
+                        if (_shipment.Operations.Any(o => o.Type == "CustomerFinansing" || o.Type == "CustomerFinancing" || o.Type.StartsWith("Payment")))
+                            return _shipment.Operations.Where(o => o.Type == "CustomerFinansing" || o.Type == "CustomerFinancing" || o.Type.StartsWith("Payment")).Sum(o => o.Commission.Increased);
+                        return 0;
+                    };
 
                 case "DutyCustomer":
                     return _shipment.Operations.Where(o => o.Type == "CustomerFinansing" || o.Type == "CustomerFinancing").Sum(o => o.Summ);
