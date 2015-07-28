@@ -61,5 +61,9 @@ namespace AccountingFactory
         {
             return currency * this.Rate;
         }
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
 }
