@@ -20,23 +20,53 @@ namespace AccountingFactoryTests
         public string ContractDelivery { get; set; }
 
         public string Title { get; set; }
+        /// <summary>
+        /// Номинал накладной
+        /// </summary>
         public double Summ { get; set; }
 
+        /// <summary>
+        /// Дата поставки
+        /// </summary>
         public DateTime DateShipment { get; set; }
+        /// <summary>
+        /// Дата платежа
+        /// </summary>
         public DateTime DatePayment { get; set; }
         
+        /// <summary>
+        /// Договор с регрессом / без
+        /// </summary>
         public bool StatusRegress { get; set; }
+        /// <summary>
+        /// С финансированием / без
+        /// </summary>
         public bool StatusFinancing { get; set; }
 
+        /// <summary>
+        /// % дострочного платежа
+        /// </summary>
         public double RateFinancing { get; set; }
 
+        /// <summary>
+        /// Комиссия МИТ при выплате с финансированием
+        /// </summary>
         public double MITComFin { get; set; }
+        /// <summary>
+        /// Комиссия МИТ при обработке платежа
+        /// </summary>
         public double MITComNoFin { get; set; }
+        /// <summary>
+        /// Минимальная комиссия МИТ
+        /// </summary>
         public double MITComMin { get; set; }
 
         public bool CommissionCommonPassing { get; set; }
 
         public double PrepayCommission { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public double RateCommission { get; set; }
         public double RateCommissionMin { get; set; }
         

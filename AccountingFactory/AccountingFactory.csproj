@@ -47,6 +47,7 @@
     <Compile Include="IAccountingParamsProvider.cs" />
     <Compile Include="IOperation.cs" />
     <Compile Include="IOperationBuilder.cs" />
+    <Compile Include="KV.cs" />
     <Compile Include="Money.cs" />
     <Compile Include="Operation.cs" />
     <Compile Include="Posting.cs" />

@@ -17,48 +17,48 @@ namespace AccountingFactoryTests
     {
         private ExampleShipment _shipment;
 
-        DateTime _date;
-        double _summ;
-        string _type;
+      //  DateTime _date;
+      //  double _summ;
+      //  string _type;
       
-        Dictionary<string, Value> _cacheValues;
-        Dictionary<string, RateCommission> _cacheRates;
+        Dictionary<CachePack, Value> _cacheValues;
+        Dictionary<CachePack, RateCommission> _cacheRates;
         Dictionary<string, Account> _cacheAccounts;
 
         private DateTime DateFinancing
         { get { return _shipment.Operations.Last(o => o.Type == "CustomerFinansing").Date; } }
 
-        public Value this[string name]
-        { get { return this.GetParam(name); } }
+        public Value this[CachePack val]
+        { get { return this.GetParam(val); } }
 
         public ExampleShipmentParamsProvider(ExampleShipment shipment, DateTime date, double summ, string type = "")
         {
             _shipment = shipment;
 
-            _date = date;
-            _summ = summ;
-            _type = type;
+          //  _date = date;
+          //  _summ = summ;
+          //  _type = type;
         
-            _cacheValues = new Dictionary<string, Value>();
-            _cacheRates = new Dictionary<string, RateCommission>();
+            _cacheValues = new Dictionary<CachePack, Value>();
+            _cacheRates = new Dictionary<CachePack, RateCommission>();
             _cacheAccounts = new Dictionary<string, Account>();
         }
 
-        public Value GetParam(string name)
+        public Value GetParam(CachePack val)
         {
-            if (_cacheValues.ContainsKey(name))
-                return _cacheValues[name];
+            if (_cacheValues.ContainsKey(val))
+                return _cacheValues[val];
 
-            Value result = this.GetParamValue(name);
+            Value result = this.GetParamValue(val);
 
-            _cacheValues.Add(name, result);
+            _cacheValues.Add(val, result);
 
             return result;
         }
 
-        protected Value GetParamValue(string name)
+        protected Value GetParamValue(CachePack val)
         {
-            switch (name)
+            switch (val.Name)
             {
                 case "CF":
                     return _shipment.ContractFactoring;
@@ -151,7 +151,7 @@ namespace AccountingFactoryTests
                     {
                         Func<DateTime, bool> check = d => { return !(d.Hour > 16 || d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday); };
 
-                        DateTime now = _date;
+                        DateTime now = val.Date;
 
                         while (!check(now))
                             now = now.AddDays(1);
@@ -161,7 +161,7 @@ namespace AccountingFactoryTests
 
             }
 
-            throw new ArgumentException(String.Format("Shipment's param {0} not recognized", name));
+            throw new ArgumentException(String.Format("Shipment's param {0} not recognized", val.Name));
         }
 
         public Account GetAccount(string name)
@@ -178,12 +178,12 @@ namespace AccountingFactoryTests
             //throw new NotImplementedException("Can't get Shipment's Accounts");
         }
 
-        public RateCommission GetRate(string name)
+        public RateCommission GetRate(CachePack val)
         {
             bool statusFinancing = _shipment.StatusFinancing;
             bool commonPassing = _shipment.CommissionCommonPassing;
 
-            switch (name)
+            switch (val.Name)
             {
                 // ставка МеталлИнвестТехнологии
                 case "MIT":
@@ -202,7 +202,7 @@ namespace AccountingFactoryTests
                         if (!statusFinancing || commonPassing)
                             return RateCommission.Zero;
 
-                        double daysCount = _date > this.DateFinancing ? (_date - this.DateFinancing).Days : 0;
+                        double daysCount = val.Date > this.DateFinancing ? (val.Date - this.DateFinancing).Days : 0;
 
                         return new RateCommission(this["RateStandart"] * daysCount / 365.0);
                     }
@@ -215,7 +215,7 @@ namespace AccountingFactoryTests
                         if (commonPassing)
                             return RateCommission.Zero;
 
-                        double daysCount = _date > _shipment.DatePayment ? (_date - _shipment.DatePayment).Days : 0;
+                        double daysCount = val.Date > _shipment.DatePayment ? (val.Date - _shipment.DatePayment).Days : 0;
 
                         return new RateCommission(this["RateExtra"] * daysCount / 365);
                     }
@@ -258,7 +258,7 @@ namespace AccountingFactoryTests
                         if (!statusFinancing || commonPassing)
                             return RateCommission.Zero;
 
-                        double daysCount = _date > this.DateFinancing ? (_date - this.DateFinancing).Days : 0;
+                        double daysCount = val.Date > this.DateFinancing ? (val.Date - this.DateFinancing).Days : 0;
 
                         return new RateCommission(this["RateValue"] * daysCount, 0, this["RateValueMin"], this["RateValuePlus"]);
                     }
@@ -270,7 +270,7 @@ namespace AccountingFactoryTests
                     }
             }
 
-            throw new ArgumentException(String.Format("Rate {0} is not recognized for Shipments", name));
+            throw new ArgumentException(String.Format("Rate {0} is not recognized for Shipments", val.Name));
         }
 
     }
